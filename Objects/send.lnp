@@ -1,0 +1,6 @@
+".\Objects\STARTUP.obj",
+".\Objects\send.obj",
+".\Objects\Delay.obj",
+".\Objects\LCD1602.obj" 
+TO ".\Objects\send" 
+PRINT(".\Listings\send.m51")

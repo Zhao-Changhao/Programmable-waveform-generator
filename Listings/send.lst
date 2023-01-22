@@ -1,0 +1,123 @@
+C51 COMPILER V9.54   SEND                                                                  12/30/2022 11:15:04 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SEND
+OBJECT MODULE PLACED IN .\Objects\send.obj
+COMPILER INVOKED BY: E:\keil\C51\BIN\C51.EXE send.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\send.ls
+                    -t) OBJECT(.\Objects\send.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "Delay.h"
+   3          #include "LCD1602.h"
+   4          sbit SW1=P1^0;//锯齿
+   5          sbit SW2=P1^1;//三角
+   6          sbit SW3=P1^2;//正弦
+   7          sbit SW4=P1^3;//方波
+   8          
+   9          sbit begin=P1^4;
+  10          unsigned int t1=3000,t2=2000,t3=4000,t4=2000;
+  11          unsigned char Result=0;
+  12          unsigned int m=0;
+  13          
+  14          void delay_tt(unsigned char t)
+  15          {   
+  16   1          m=t/1000; 
+  17   1          while(m>0)
+  18   1          {
+  19   2              LCD_ShowNum(1,1,m,1);
+  20   2              m--;
+  21   2              Delay(1000);
+  22   2          }
+  23   1      }
+  24          
+  25          void main()
+  26          {
+  27   1              TMOD=0x20;
+  28   1              TL1=0xF4; 
+  29   1              TH1=0xF4;
+  30   1              PCON=0x00; 
+  31   1              SCON=0x50; 
+  32   1              TR1=1;
+  33   1              LCD_Init();
+  34   1              Delay(10);
+  35   1      
+  36   1              while(1)  
+  37   1              {   
+  38   2                      if(begin==0) 
+  39   2                      {
+  40   3                              if(SW1==0)
+  41   3                              {Delay(20);t1=t1+1000;}
+  42   3                              if(SW2==0)
+  43   3                              {Delay(20);t2=t2+1000;}
+  44   3                              if(SW3==0)
+  45   3                              {Delay(20);t3=t3+1000;}
+  46   3                              if(SW4==0)
+  47   3                              {Delay(20);t4=t4+1000;}
+  48   3                      }
+  49   2                      else
+  50   2                      {               
+  51   3                              SBUF=1; 
+  52   3                              do{LCD_ShowString(2,1,"SAW");
+  53   4                                      while(t1>0)
+  54   4                                      {
+C51 COMPILER V9.54   SEND                                                                  12/30/2022 11:15:04 PAGE 2   
+
+  55   5                                              LCD_ShowNum(1,1,t1,4);
+  56   5                                              t1=t1-1000;
+  57   5                                              Delay(1000);
+  58   5                                      }
+  59   4                              }while(!TI);
+  60   3                              TI=0;
+  61   3                              
+  62   3                              SBUF=2; 
+  63   3                              do{LCD_ShowString(2,1,"TRI");
+  64   4                                      while(t2>0)
+  65   4                                      {
+  66   5                                              LCD_ShowNum(1,1,t2,4);
+  67   5                                              t2=t2-1000;
+  68   5                                              Delay(1000);
+  69   5                                      }
+  70   4                              }while(!TI);
+  71   3                              TI=0;
+  72   3                              
+  73   3                              SBUF=3; 
+  74   3                              do{LCD_ShowString(2,1,"SIN");
+  75   4                                      while(t3>0)
+  76   4                                      {
+  77   5                                              LCD_ShowNum(1,1,t3,4);
+  78   5                                              t3=t3-1000;
+  79   5                                              Delay(1000);
+  80   5                                      }
+  81   4                              }while(!TI);
+  82   3                              TI=0;
+  83   3                              
+  84   3                              SBUF=4; 
+  85   3                              do{LCD_ShowString(2,1,"SQU");
+  86   4                                      while(t4>0)
+  87   4                                      {
+  88   5                                              LCD_ShowNum(1,1,t4,4);
+  89   5                                              t4=t4-1000;
+  90   5                                              Delay(1000);
+  91   5                                      }
+  92   4                              }while(!TI);
+  93   3                              TI=0;
+  94   3                              break;
+  95   3                      }
+  96   2              }
+  97   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    445    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

@@ -1,0 +1,142 @@
+C51 COMPILER V9.54   MAIN                                                                  12/29/2022 18:28:19 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\keil\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.ls
+                    -t) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include<reg51.h>
+   2          #include "Delay.h"
+   3          #include "LCD1602.h"
+   4                  
+   5          sbit WR1= P2^7;         
+   6          unsigned char  num=0;
+   7          unsigned  dat;
+   8          unsigned int flag=3;
+   9          unsigned int Result=0;
+  10          unsigned char code tria_tab[]={0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,
+  11                  44,46,48,50,52,54,56,58,60,62,64,66,68,70,72,74,76,78,80,82,84,86,88,90,92,94,96,98,100,
+  12                  102,104,106,108,110,112,114,116,118,120,122,124,126,128,130,132,134,136,138,140,142,144,
+  13                  146,148,150,152,154,156,158,160,162,164,166,168,170,172,174,176,178,180,182,184,186,188,
+  14                  190,192,194,196,198,200,202,204,206,208,210,212,214,216,218,220,222,224,226,228,230,232,
+  15                  234,236,238,240,242,244,246,248,250,252,254,254,254,254,252,250,248,246,244,242,240,
+  16                  238,236,234,232,230,228,226,224,222,220,218,216,214,212,210,208,206,204,202,200,198,196,
+  17                  194,192,190,188,186,184,182,180,178,176,174,172,160,168,166,164,162,160,158,156,154,152,
+  18                  150,148,146,144,142,140,138,136,134,130,128,126,124,122,120,118,116,114,112,110,108,106,
+  19                  104,102,100,98,96,94,92,90,88,86,84,82,80,78,76,74,72,70,68,66,64,62,60,58,56,54,52,50,
+  20                  48,46,44,42,40,38,36,34,32,30,28,26,24,22,20,18,16,14,12,10,8,6,4,2,0};
+  21          unsigned char  code sine_tab[256]={  
+  22          
+  23               0x80,0x83,0x86,0x89,0x8D,0x90,0x93,0x96,0x99,0x9C,0x9F,0xA2,0xA5,0xA8,0xAB,0xAE,  
+  24          
+  25               0xB1,0xB4,0xB7,0xBA,0xBC,0xBF,0xC2,0xC5,0xC7,0xCA,0xCC,0xCF,0xD1,0xD4,0xD6,0xD8,  
+  26          
+  27               0xDA,0xDD,0xDF,0xE1,0xE3,0xE5,0xE7,0xE9,0xEA,0xEC,0xEE,0xEF,0xF1,0xF2,0xF4,0xF5,  
+  28          
+  29               0xF6,0xF7,0xF8,0xF9,0xFA,0xFB,0xFC,0xFD,0xFD,0xFE,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,  
+  30          
+  31               0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFE,0xFD,0xFD,0xFC,0xFB,0xFA,0xF9,0xF8,0xF7,0xF6,  
+  32          
+  33               0xF5,0xF4,0xF2,0xF1,0xEF,0xEE,0xEC,0xEA,0xE9,0xE7,0xE5,0xE3,0xE1,0xDF,0xDD,0xDA,  
+  34          
+  35               0xD8,0xD6,0xD4,0xD1,0xCF,0xCC,0xCA,0xC7,0xC5,0xC2,0xBF,0xBC,0xBA,0xB7,0xB4,0xB1,  
+  36          
+  37               0xAE,0xAB,0xA8,0xA5,0xA2,0x9F,0x9C,0x99,0x96,0x93,0x90,0x8D,0x89,0x86,0x83,0x80,  
+  38          
+  39               0x80,0x7C,0x79,0x76,0x72,0x6F,0x6C,0x69,0x66,0x63,0x60,0x5D,0x5A,0x57,0x55,0x51,  
+  40          
+  41               0x4E,0x4C,0x48,0x45,0x43,0x40,0x3D,0x3A,0x38,0x35,0x33,0x30,0x2E,0x2B,0x29,0x27,  
+  42          
+  43               0x25,0x22,0x20,0x1E,0x1C,0x1A,0x18,0x16,0x15,0x13,0x11,0x10,0x0E,0x0D,0x0B,0x0A,  
+  44          
+  45               0x09,0x08,0x07,0x06,0x05,0x04,0x03,0x02,0x02,0x01,0x00,0x00,0x00,0x00,0x00,0x00,  
+  46          
+  47               0x00,0x00,0x00,0x00,0x00,0x00,0x01,0x02,0x02,0x03,0x04,0x05,0x06,0x07,0x08,0x09,  
+  48          
+  49               0x0A,0x0B,0x0D,0x0E,0x10,0x11,0x13,0x15,0x16,0x18,0x1A,0x1C,0x1E,0x20,0x22,0x25,  
+  50          
+  51               0x27,0x29,0x2B,0x2E,0x30,0x33,0x35,0x38,0x3A,0x3D,0x40,0x43,0x45,0x48,0x4C,0x4E,  
+  52          
+  53               0x51,0x55,0x57,0x5A,0x5D,0x60,0x63,0x66,0x69,0x6C,0x6F,0x72,0x76,0x79,0x7C,0x7E  
+  54          
+C51 COMPILER V9.54   MAIN                                                                  12/29/2022 18:28:19 PAGE 2   
+
+  55          };
+  56          
+  57          void received(void) interrupt 4
+  58          {    
+  59   1              for(num =0;  num <=2;  num++)   
+  60   1              {
+  61   2                      dat=SBUF;   RI=0;
+  62   2                      flag=dat;
+  63   2              }
+  64   1                              
+  65   1      }
+  66          void main()
+  67          {
+  68   1              TMOD=0x20;     
+  69   1              SCON=0x50;     
+  70   1              PCON=0x00;              
+  71   1              TR1=1;
+  72   1              TH1=0xF4;     TL1=0xF4;
+  73   1              
+  74   1              EA=1;     ES=1;     
+  75   1              PS=1;     ET0=1;
+  76   1              
+  77   1              WR1=0; 
+  78   1              LCD_Init();     
+  79   1              Delay(10);
+  80   1              while(1)
+  81   1              {
+  82   2                              if(flag==1)
+  83   2                              {LCD_ShowString(2,1,"saw");}
+  84   2                              if(flag==2)
+  85   2                              {LCD_ShowString(2,1,"tri");}
+  86   2                              if(flag==3)
+  87   2                              {LCD_ShowString(2,1,"sin");}
+  88   2                              if(flag==4)
+  89   2                              {LCD_ShowString(2,1,"squ");}
+  90   2                      for(num =0;  num <=255;  num++)
+  91   2                      {       
+  92   3                              switch(flag)
+  93   3                              {
+  94   4                                      case 1:P1=num;break;
+  95   4                                      case 2:P1=tria_tab[num];break;
+  96   4                                      case 3:P1=sine_tab[num];break;
+  97   4                                      case 4:if(num<128)  P1=0x00;            
+  98   4                                              else  P1=0xff;break;
+  99   4                                      default:break;
+ 100   4                              }
+ 101   3                      }                         
+ 102   2              }   
+ 103   1      }
+ 104          //void main()
+ 105          //{
+ 106          //      LCD_Init();
+ 107          //      while(1)
+ 108          //      {
+ 109          //              Result++;                                       //Result??
+ 110          //              Delay(1000);                            //??1?
+ 111          //              LCD_ShowNum(1,1,Result,3);      //?LCD?1?1???Result,???3?
+ 112          //              LCD_ShowString(2,1,"sin");
+ 113          //      }
+ 114          //}
+
+
+C51 COMPILER V9.54   MAIN                                                                  12/29/2022 18:28:19 PAGE 3   
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    233    ----
+   CONSTANT SIZE    =    529    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      7    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
